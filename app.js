@@ -186,7 +186,7 @@ new Vue({
       order: {
          dir: 1, 
 
-         column: 'price'
+         column: ''
       }
    },
 
@@ -195,9 +195,16 @@ new Vue({
          return this.products.sort((a,b) => {
             let left = a[this.order.column], right = b[this.order.column];
 
-            return (left - right) * this.order.dir
+            if(isNaN(left) && isNaN(right)){
+               if (left < right) return -1 * this.order.dir;
+               else if(left > right) return 1 * this.order.dir;
+               else return 0;
+            }else{               
+               return (left - right) * this.order.dir
+            }
          })
       },
+
       classes(){
          return [
             'sort-control',
