@@ -187,6 +187,9 @@ new Vue({
          dir: 1,
 
          column: ''
+      },
+      filters:{
+         name:''
       }
    },
 
@@ -206,6 +209,9 @@ new Vue({
       },
       sortType() {
          return this.order.dir === 1 ? 'ascending' : 'descending'
+      },
+      whenSearching(){
+         return this.filters.name.length > 0
       }
    },
 
@@ -219,6 +225,9 @@ new Vue({
       sort(column) {
          this.order.column = column;
          this.order.dir *= -1;
+      },
+      clearText(){
+         this.filters.name = "";
       }
    },
 })
