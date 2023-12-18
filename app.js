@@ -184,13 +184,19 @@ new Vue({
          }
       ],
       order: {
-         dir: 1
+         dir: 1, 
+
+         column: 'price'
       }
    },
 
    computed:{
       productsSorted(){
-         return this.products.sort((a,b) => (a.price - b.price) * this.order.dir)
+         return this.products.sort((a,b) => {
+            let left = a[this.order.column], right = b[this.order.column];
+
+            return (left - right) * this.order.dir
+         })
       },
       classes(){
          return [
@@ -201,7 +207,8 @@ new Vue({
    },
 
    methods: {
-      sort(){
+      sort(column){
+         this.order.column = column;
          this.order.dir *= -1;
       }
    },
