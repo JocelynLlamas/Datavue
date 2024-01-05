@@ -188,15 +188,21 @@ new Vue({
 
          column: ''
       },
-      filters:{
-         name:''
+      filters: {
+         name: ''
       },
-      perPage:10,
-      currentPage:1,
+      perPage: 10,
+      currentPage: 1,
+      product: {
+         id: null,
+         name: '',
+         category: '',
+         price: '',
+      }
    },
 
    computed: {
-      productsPaginated(){
+      productsPaginated() {
          let start = (this.currentPage - 1) * this.perPage;
          let end = this.currentPage * this.perPage;
          return this.productsSorted.slice(start, end);
@@ -217,10 +223,10 @@ new Vue({
       sortType() {
          return this.order.dir === 1 ? 'ascending' : 'descending'
       },
-      whenSearching(){
+      whenSearching() {
          return this.filters.name.length > 0
       },
-      productsFiltered(){
+      productsFiltered() {
          let products = this.products;
 
          if (this.filters.name) {
@@ -230,42 +236,60 @@ new Vue({
 
          return products;
       },
-      isFirstPage(){
-         return this.currentPage===1;
+      isFirstPage() {
+         return this.currentPage === 1;
       },
-      isLastPage(){
-         return this.currentPage>=this.pages;
+      isLastPage() {
+         return this.currentPage >= this.pages;
       },
-      pages(){
+      pages() {
          return Math.ceil(this.productsFiltered.length / this.perPage)
       }
    },
 
    methods: {
-      switchPage(page){
+      save() {
+         if (this.product.name && this.product.category && this.product.price) {
+            this.product.id = this.products.length + 1
+
+            this.products.unshift(this.product)
+
+            this.product = {
+               id: null,
+               name: '',
+               category: '',
+               price: '',
+            }
+
+            $(this.$refs.vuemodal).modal('hide');
+         }else{
+            alert("Please fill in the form properly")
+         }
+      },
+      switchPage(page) {
          this.currentPage = page;
       },
-      prev(){
-         if(!this.isFirstPage){
+      prev() {
+         if (!this.isFirstPage) {
             this.currentPage--;
          }
       },
-      next(){
-         if(!this.isLastPage){
+      next() {
+         if (!this.isLastPage) {
             this.currentPage++;
          }
       },
-      classes(column){
+      classes(column) {
          return [
             'sort-control',
-            column === this.order.column ? this.sortType :  ''
+            column === this.order.column ? this.sortType : ''
          ]
       },
       sort(column) {
          this.order.column = column;
          this.order.dir *= -1;
       },
-      clearText(){
+      clearText() {
          this.filters.name = "";
       }
    },
