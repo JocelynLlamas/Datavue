@@ -41,7 +41,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="product of productsSorted">
+                        <tr v-for="product of productsPaginated">
                             <td>{{ product.name }}</td>
                             <td>{{ product.category }}</td>
                             <td>{{ product.price }}</td>
@@ -52,11 +52,11 @@
             <div class="card-footer">
                 <nav>
                   <ul class="pagination justify-content-center">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    <li class="page-item" :class="{disabled: isFirstPage}"><a class="page-link" href="#" @click.prevent="prev">Previous</a></li>
+                    <li class="page-item" :class="{active: currentPage === page}" v-for="page in pages">
+                        <a class="page-link" href="#" @click.prevent="switchPage(page)">{{page}}</a>
+                    </li>
+                    <li class="page-item" :class="{disabled: isLastPage}"><a class="page-link" href="#"  @click.prevent="next">Next</a></li>
                   </ul>
                 </nav>
             </div>
