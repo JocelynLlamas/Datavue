@@ -22,7 +22,7 @@
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-md-3">
-                        <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
+                        <a href="" class="btn btn-primary" @click.prevent="add">
                             <i class="fas fa-plus-circle"></i> Add New
                         </a>
                     </div>
@@ -51,6 +51,7 @@
                             <th @click="sort('name')" :class="classes('name')">Product Name</th>
                             <th @click="sort('category')" :class="classes('category')">Category</th>
                             <th @click="sort('price')" :class="classes('price')">Price</th>
+                            <th width="100">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,6 +59,11 @@
                             <td>{{ product.name }}</td>
                             <td>{{ product.category }}</td>
                             <td>{{ product.price }}</td>
+                            <td>
+                                <a href="#" class="btn btn-sm bt-outline-secondary" @click.prevent="edit(product)">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -82,7 +88,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ modalTitle }}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -105,7 +111,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" @click.prevent="save">Save changes</button>
+                        <button type="button" class="btn btn-primary" @click.prevent="saveOrUpdate">{{ modalTextButton}}</button>
                     </div>
                 </div>
             </div>
