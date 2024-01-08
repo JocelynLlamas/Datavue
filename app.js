@@ -257,16 +257,16 @@ new Vue({
       pages() {
          return Math.ceil(this.productsFiltered.length / this.perPage)
       },
-      modalTitle(){
+      modalTitle() {
          return this.isEdit ? "Update Product" : "Add New Product"
       },
-      modalTextButton(){
+      modalTextButton() {
          return this.isEdit ? "Update" : "Save"
       }
    },
 
    methods: {
-      add(){
+      add() {
          this.isEdit = false;
 
          this.product = {
@@ -278,21 +278,21 @@ new Vue({
 
          $(this.$refs.vuemodal).modal('show');
       },
-      edit(product){
+      edit(product) {
          this.product = Object.assign({}, product);
 
          this.isEdit = true;
 
          $(this.$refs.vuemodal).modal('show');
       },
-      saveOrUpdate(){
-         if(this.isEdit){
+      saveOrUpdate() {
+         if (this.isEdit) {
             this.update();
-         }else{
+         } else {
             this.save();
          }
       },
-      update(){
+      update() {
          let index = this.products.findIndex(item => item.id === this.product.id);
 
          this.products.splice(index, 1, this.product);
@@ -317,6 +317,13 @@ new Vue({
             $(this.$refs.vuemodal).modal('hide');
          } else {
             alert("Please fill in the form properly")
+         }
+      },
+      remove(product) {
+         if (confirm("Are you sure?")) {
+            let index = this.products.findIndex(item => item.id === product.id);
+
+            this.products.splice(index, 1);
          }
       },
       switchPage(page) {
