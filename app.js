@@ -18,10 +18,11 @@ new Vue({
       product: {
          id: null,
          name: '',
-         category: '',
+         category_id: '',
          price: '',
       },
-      isEdit: false
+      isEdit: false,
+      errors: {}
    },
 
    computed: {
@@ -82,17 +83,17 @@ new Vue({
    },
 
    methods: {
-      fetchProducts(){
+      fetchProducts() {
          axios.get('/products')
-               .then(({data}) => {
-                  this.products = data.data
-               })
+            .then(({ data }) => {
+               this.products = data.data
+            })
       },
-      fetchCategories(){
+      fetchCategories() {
          axios.get('/categories')
-               .then(({data}) => {
-                  this.categories = data.data
-               })
+            .then(({ data }) => {
+               this.categories = data.data
+            })
       },
       add() {
          this.isEdit = false;
@@ -130,22 +131,26 @@ new Vue({
          $(this.$refs.vuemodal).modal('hide');
       },
       save() {
-         if (this.product.name && this.product.category && this.product.price) {
-            this.product.id = this.products.length + 1
+         this.product.price = this.product.price * 100;
 
-            this.products.unshift(this.product)
+         axios.post('/products', this.product)
+            .then(({data}) => {
+               this.productsPaginated.unshift(data.data)
 
-            this.product = {
-               id: null,
-               name: '',
-               category: '',
-               price: '',
-            }
+               this.product = {
+                  id: null,
+                  name: '',
+                  category: '',
+                  price: '',
+               }
 
-            $(this.$refs.vuemodal).modal('hide');
-         } else {
-            alert("Please fill in the form properly")
-         }
+               TimeRanges.errors = {}
+
+               $(this.$refs.vuemodal).modal('hide');
+            })
+            .catch(({ response }) => {
+               this.errors = response.data.errors;
+            })
       },
       remove(product) {
          if (confirm("Are you sure?")) {
