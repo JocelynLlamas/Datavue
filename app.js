@@ -122,13 +122,24 @@ new Vue({
          }
       },
       update() {
-         let index = this.products.findIndex(item => item.id === this.product.id);
+         this.product.price = this.product.price * 100;
 
-         this.products.splice(index, 1, this.product);
+         axios.put('/products/'+ this.product.id, this.product)
+         .then(({data})=>{
 
-         this.isEdit = false;
+            let index = this.products.findIndex(item=> item.id === this.product.id);
 
-         $(this.$refs.vuemodal).modal('hide');
+            this.products.splice(index, 1, data.data);
+
+            this.isEdit = false;
+
+            this.errors = {};
+
+            $(this.$refs.vuemodal).modal('hide');
+         })
+         .catch(({response})=>{
+            this.errors = response.data.errors
+         })
       },
       save() {
          this.product.price = this.product.price * 100;
