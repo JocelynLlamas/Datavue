@@ -76,13 +76,13 @@
             <div class="card-footer">
                 <nav>
                     <ul class="pagination justify-content-center">
-                        <li class="page-item" :class="{disabled: isFirstPage}"><a class="page-link" href="#"
-                                @click.prevent="prev">Previous</a></li>
+                        <li class="page-item" :class="{disabled: isFirstPage}"><a class="page-link" href="?page=1"
+                                @click="prev($event)">First</a></li>
                         <li class="page-item" :class="{active: currentPage === page}" v-for="page in pages">
-                            <a class="page-link" href="#" @click.prevent="switchPage(page)">{{page}}</a>
+                            <a class="page-link" :href="`?page=${page}`" @click="switchPage(page, $event)">{{page}}</a>
                         </li>
-                        <li class="page-item" :class="{disabled: isLastPage}"><a class="page-link" href="#"
-                                @click.prevent="next">Next</a></li>
+                        <li class="page-item" :class="{disabled: isLastPage}"><a class="page-link" :href="`?page=${pages}`"
+                                @click="next($event)">Last</a></li>
                     </ul>
                 </nav>
             </div>

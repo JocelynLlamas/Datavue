@@ -81,9 +81,25 @@ new Vue({
    mounted() {
       this.fetchProducts();
       this.fetchCategories();
+      this.setCurrentPage();
+
+      // window.onpopstate = () =>{
+      //    this.setCurrentPage();
+      // }
    },
 
    methods: {
+      setPushState(event){
+         event.preventDefault();
+         const url = event.srcElement.href;
+         if(url){
+            history.pushState({}, "", url);
+         }
+      },
+      setCurrentPage(){
+         let params = new URLSearchParams(window.location.search.slice(1));
+         this.currentPage = params.has('page')?parseInt(params.get('page')):1;
+      },
       fetchProducts() {
          axios.get('/products')
             .then(({ data }) => {
@@ -185,15 +201,18 @@ new Vue({
             });
          }
       },
-      switchPage(page) {
+      switchPage(page, event) {
+         this.setPushState(event);
          this.currentPage = page;
       },
-      prev() {
+      prev(event) {
+         this.setPushState(event);
          if (!this.isFirstPage) {
             this.currentPage--;
          }
       },
-      next() {
+      next(event) {
+         this.setPushState(event);
          if (!this.isLastPage) {
             this.currentPage++;
          }
