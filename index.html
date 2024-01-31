@@ -55,7 +55,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="product of productsPaginated">
+                        <tr v-for="product of productsPaginated"
+                            :class="{'table-danger':removedProductId == product.id}"
+                        >
                             <td>{{ product.name }}</td>
                             <td>{{ product.category }}</td>
                             <td>{{ product.price }}</td>

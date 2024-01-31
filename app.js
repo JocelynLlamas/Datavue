@@ -22,7 +22,8 @@ new Vue({
          price: '',
       },
       isEdit: false,
-      errors: {}
+      errors: {},
+      removedProductId: null
    },
 
    computed: {
@@ -165,9 +166,23 @@ new Vue({
       },
       remove(product) {
          if (confirm("Are you sure?")) {
-            let index = this.products.findIndex(item => item.id === product.id);
+            axios.delete('/products/'+ product.id)
+            .then(res => {
+               //store the product.id in removedProduct
+               this.removedProductId = product.id;
 
-            this.products.splice(index, 1);
+               //delay the execution for 1 second
+               //then set the removeProductId back to null to detach
+               //the table-danger class from <tr>
+               //after that remove the tr from UI
+               new Promise(resolve => setTimeout(resolve, 1000))
+               .then(()=>{
+                  this.removedProductId = null;
+                  let index = this.products.findIndex(item => item.id === product.id);
+
+                  this.products.splice(index,1)
+               })
+            });
          }
       },
       switchPage(page) {
